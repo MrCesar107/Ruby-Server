@@ -1,7 +1,7 @@
 module RubyServer
   class RequestParser
     def parse(request)
-      method, path, version = request.lines.fisrt.split
+      method, path, version = request.lines[0].split
 
       {
         path: path,
@@ -16,7 +16,7 @@ module RubyServer
         return headers if line == "\r\n"
 
         header, value = line.split
-        header = normilize(header)
+        header = normalize(header)
         headers[header] = value
       end
     end

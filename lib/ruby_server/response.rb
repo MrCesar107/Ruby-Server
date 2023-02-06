@@ -4,6 +4,7 @@ module RubyServer
 
     def initialize(code:, data: "")
       @response = "HTTP/1.1 #{code}\r\n" +
+      "Content-Length: #{data.size}\r\n" +
       "\r\n" +
       "#{data}\r\n"
       @code = code

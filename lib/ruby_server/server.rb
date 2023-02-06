@@ -2,16 +2,27 @@
 
 require "socket"
 
-module RailsServer
+require_relative "request_parser"
+require_relative "response_builder"
+
+module RubyServer
   class Server
+    SERVER_ROOT = "tmp/web-server/"
+
     def run
-      server = TCPServer.new("localhost", 8080)
+      tcp_server = TCPServer.new("localhost", 8080)
 
       loop {
-        client = server.accept
+        client = tcp_server.accept
         request = client.readpartial(2048)
 
-        puts request
+        request = RequestParser.new.parse(request)
+        response = ResponseBuilder.new(SERVER_ROOT).prepare(request)
+
+        puts "#{client.peeraddr[3]} #{request.fetch(:path)} - #{response.code}"
+
+        response.send(client)
+        client.close
       }
     end
   end
