@@ -8,9 +8,12 @@ require_relative "response_builder"
 module RubyServer
   class Server
     SERVER_ROOT = "tmp/web-server/"
+    SERVER_PORT = 8080
 
     def run
-      tcp_server = TCPServer.new("localhost", 8080)
+      tcp_server = TCPServer.new("localhost", SERVER_PORT)
+
+      puts "Listening on port #{SERVER_PORT}..."
 
       loop {
         client = tcp_server.accept
